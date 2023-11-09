@@ -1,0 +1,16 @@
+
+server:
+  port: 8085
+  
+spring:
+  application:
+    name: config-server  
+    
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/swapnilbamble1438/ConfigServer1
+          clone-on-start: true
+          
+    
