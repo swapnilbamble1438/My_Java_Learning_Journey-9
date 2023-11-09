@@ -1,0 +1,26 @@
+
+server:
+  port: 8761
+
+spring: 
+   application:
+      name: eserver
+
+eureka:
+   instance:
+      hostname: localhost
+   client: 
+      registerWithEureka: false
+      fetchRegistry: false
+      serviceUrl:
+         defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/ 
+    
+#server:
+#  port: 8761   
+#
+#eureka:
+#   client: 
+#      registerWithEureka: true
+#      fetchRegistry: true
+#   server:
+#      waitTimeInMsWhenSyncEmpty: 0
