@@ -1,0 +1,1 @@
+add eureka discovery client dependency
