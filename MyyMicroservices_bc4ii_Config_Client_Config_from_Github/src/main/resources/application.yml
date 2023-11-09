@@ -1,0 +1,14 @@
+
+
+spring:
+  config:
+    import:  optional:configserver:http://localhost:8085
+#                ^
+#    without optional: also it will work
+
+# spring.config.import= configserver:http://localhost:8085
+
+  
+# use this when you dont want to use default application.yml from github
+#  profiles:
+#    active: prod 
