@@ -1,0 +1,60 @@
+
+
+server:
+   port: 8084
+   
+   
+   
+eureka:
+   instance:
+      hostname: localhost    
+   
+spring: 
+   application:
+      name: apigateway
+   cloud:
+      gateway:
+         routes:
+          - id: user-service
+            uri: lb://user-service
+            predicates:
+             - Path= /user/**
+            filters:
+             - name: CircuitBreaker
+               args:
+                 name: user-service
+                 fallbackuri: forward:/userservicefallback 
+          - id: department-service
+            uri: lb://department-service
+            predicates:
+             - Path= /department/**
+            filters:
+             - name: CircuitBreaker
+               args:
+                  name: department-service
+                  fallbackuri: forward:/departmentservicefallback    
+            
+       
+       
+       
+            
+            
+#Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, health, info            
+            
+#Hystrix Configuration
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 4000
+            
+
+             
+   
