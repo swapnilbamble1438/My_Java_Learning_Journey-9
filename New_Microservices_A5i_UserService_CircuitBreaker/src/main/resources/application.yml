@@ -1,0 +1,97 @@
+
+server:
+  port: 8081 
+ 
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_microservice
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update   
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        
+        
+  application:
+    name: user-service       
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    registry-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+      
+#ratingservice:
+#  base:
+#    url: http://localhost:8083/rating/
+ 
+#hotelservice:
+#  base:
+#    url: http://localhost:8082/hotel/ 
+
+
+
+
+
+# actuator configuration
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+        
+  endpoint:
+    health:
+      show-details: always
+
+
+# resilience4J configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      RatingWithHotel:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        
+        
+# use when using retry,it should be parallel to circuit breaker
+  retry:
+    instances:
+      RatingHotelService:
+        max-attempts:
+          wait-duration: 5s
+          
+          
+# use when using rateLimiter
+  rateLimiter:
+    instances:
+      userRateLimiter:
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 2s          
+        
+        
+
+  
+  
+  
+  
+  
+            
